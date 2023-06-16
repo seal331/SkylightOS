@@ -43,7 +43,16 @@ fi
 
 set -e
 
-if ${prefix}file --is-x86-multiboot publish/sysroot/boot/chkernel.elf; then
+if [ $(tools/update_osver.py read) == "fre" ]; then
+   kernelprefix=e
+elif [ $(tools/update_osver.py read) == "chk" ]; then
+   kernelprefix=ch
+else
+   echo "ERR: Unknown kernel type - corrupt osver.h?"
+   exit 1
+fi
+
+if ${prefix}file --is-x86-multiboot publish/sysroot/boot/${kernelprefix}kernel.elf; then
 	echo kernel is multiboot confirmed
 else
 	echo kernel failed multiboot test!

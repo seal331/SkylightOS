@@ -46,7 +46,16 @@ set -e
 rm -rf publish/sysroot
 rm -f publish/skylight.iso
 mkdir -p publish/sysroot/boot/grub
-cp publish/intrim/grub.cfg publish/sysroot/boot/grub
-cp bin/ia32_$(tools/update_osver.py read)/base/esos/chkernel.elf publish/sysroot/boot
+
+if [ $(tools/update_osver.py read) == "fre" ]; then
+   cp publish/intrim/grub-fre.cfg publish/sysroot/boot/grub/grub.cfg
+   cp bin/ia32_fre/base/esos/ekernel.elf publish/sysroot/boot
+elif [ $(tools/update_osver.py read) == "chk" ]; then
+   cp publish/intrim/grub-chk.cfg publish/sysroot/boot/grub/grub.cfg
+   cp bin/ia32_chk/base/esos/chkernel.elf publish/sysroot/boot
+else
+   echo "ERR: Unknown kernel type - corrupt osver.h?"
+   exit 1
+fi
 tools/check_mb.sh
 ${prefix}mkrescue /usr/lib/grub/i386-pc -o publish/skylight.iso publish/sysroot
