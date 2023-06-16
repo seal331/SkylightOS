@@ -2,6 +2,7 @@ bin/
 build/ia32_chk
 publish/sysroot/
 publish/skylight.iso
+publish/skylight-installer.img
 build/__pycache__
 tools/__pycache__
 src/base/sdk/system/osver.h
